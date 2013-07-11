@@ -12,17 +12,26 @@
                     if(typeof h[matches[1]] === 'undefined') {
                         h[matches[1]] = {};
                     }
-                    h[matches[1]][matches[2]] = decodeURIComponent(kv[1]);
+                    if (typeof h[matches[1]][matches[2]] === 'string'){
+                        h[matches[1]][matches[2]] = [h[matches[1]][matches[2]]];
+                    	h[matches[1]][matches[2]].push(decodeURIComponent(kv[1]));
+                    } else {
+                    	h[matches[1]][matches[2]] = decodeURIComponent(kv[1]);
+                    }
                 } else {
-                    h[kv[0]] = decodeURIComponent(kv[1]);
+                	if (typeof h[kv[0]] === 'string'){
+                		h[kv[0]] = [h[kv[0]]];
+                		h[kv[0]].push(decodeURIComponent(kv[1]));
+                	} else {
+                		h[kv[0]] = decodeURIComponent(kv[1]);
+                	}
                 }
             }
         }
         return h;
     };
 
-    $.fn.deserialize = function (options) {
-        return $.deserialize($(this).serialize(), options);
+     $.fn.deserialize = function (options) {
+         return $.deserialize($(this).serialize(), options);
     };
 })(jQuery);
-
